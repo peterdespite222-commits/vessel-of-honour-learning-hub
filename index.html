@@ -1,0 +1,132 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123a72">
+  <title>Vessel of Honour | Learning Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="brand-mark large">VH</div>
+      <p class="eyebrow">VESSEL OF HONOUR SCHOOL</p>
+      <h1>Your learning space.</h1>
+      <p class="auth-intro">Sign in to view assignments, project work and school announcements shared by your teachers.</p>
+      <div class="auth-tabs" id="authTabs">
+        <button class="auth-tab active" id="loginTab" type="button">Sign in</button>
+        <button class="auth-tab" id="signupTab" type="button">Create account</button>
+      </div>
+      <form id="authForm">
+        <label>Email address<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+        <label>Password<input id="authPassword" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters" required></label>
+        <button class="primary-btn full" id="authSubmit" type="submit">Sign in</button>
+        <button type="button" id="forgotPasswordButton" class="secondary-btn full">Forgot password?</button>
+      </form>
+
+      <form id="resetPasswordForm" hidden>
+        <h2>Choose a new password</h2>
+        <p>Enter a new password for your school account.</p>
+        <label>New password
+          <input id="newPassword" type="password" minlength="6" autocomplete="new-password" placeholder="At least 6 characters" required>
+        </label>
+        <button class="primary-btn full" type="submit" id="savePasswordButton">Save new password</button>
+      </form>
+      <p class="auth-note" id="authMessage" role="status">Use your school account. New accounts start with student access.</p>
+      <p class="security-note"><span>ðŸ”’</span> Your account is protected by Supabase authentication.</p>
+    </div>
+  </section>
+
+  <div id="appScreen" class="app-shell" hidden>
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Vessel of Honour home">
+        <div class="brand-mark">VH</div>
+        <div><strong>Vessel of Honour</strong><span>LEARNING HUB</span></div>
+      </a>
+      <div class="school-label">YOUR SCHOOL SPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span>â–¦</span> Overview</button>
+        <button class="nav-item" data-view="assignments"><span>â–¤</span> Assignments</button>
+        <button class="nav-item" data-view="projects"><span>â–§</span> Project work</button>
+        <button class="nav-item" data-view="announcements"><span>â—‰</span> Announcements</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-icon">?</div>
+        <div><strong>Learning together</strong><p>One school. One learning space.</p></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-brand" id="menuButton" aria-label="Toggle navigation">â˜°</button>
+        <div class="breadcrumb">School workspace <span>/</span> <strong id="crumb">Overview</strong></div>
+        <div class="top-actions">
+          <span class="role-label" id="roleLabel">Student</span>
+          <span class="user-email" id="userEmail"></span>
+          <button class="secondary-btn signout-btn" id="signOutButton">Sign out</button>
+          <div class="avatar" id="avatar">S</div>
+        </div>
+      </header>
+
+      <section class="welcome-row">
+        <div>
+          <p class="eyebrow" id="dateLabel">YOUR LEARNING SPACE</p>
+          <h1 id="welcomeTitle">Welcome, learner <span>âœ¦</span></h1>
+          <p class="muted" id="welcomeText">Your classwork, deadlines and school updates â€” all in one place.</p>
+        </div>
+        <button class="primary-btn" id="createButton" hidden><span>ï¼‹</span> Create post</button>
+      </section>
+
+      <section class="stats-grid" aria-label="Learning summary">
+        <article class="stat-card"><div class="stat-icon blue">â–¤</div><div><p>Assignments</p><strong id="openCount">0</strong><small>Shared by your teachers</small></div></article>
+        <article class="stat-card"><div class="stat-icon purple">â–§</div><div><p>Project work</p><strong id="projectCount">0</strong><small>Topics and instructions</small></div></article>
+        <article class="stat-card"><div class="stat-icon amber">â—·</div><div><p>Coming up</p><strong id="dueCount">0</strong><small>Deadlines in the next 7 days</small></div></article>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel main-panel">
+          <div class="panel-heading">
+            <div><h2 id="sectionTitle">Latest learning tasks</h2><p id="sectionSubtitle">Work shared by your school appears here.</p></div>
+            <div class="filter-wrap"><label class="sr-only" for="subjectFilter">Filter by subject</label><select id="subjectFilter"><option value="all">All subjects</option><option>English</option><option>Mathematics</option><option>Science</option><option>ICT</option><option>Social Studies</option><option>Other</option></select></div>
+          </div>
+          <div id="statusLine" class="status-line" aria-live="polite"></div>
+          <div id="postList" class="post-list"></div>
+          <div id="emptyState" class="empty-state" hidden><div class="empty-art">âœŽ</div><h3>No posts here yet</h3><p>New assignments and school updates will appear here.</p></div>
+        </div>
+        <aside class="right-column">
+          <div class="panel calendar-panel">
+            <div class="panel-heading"><div><h2>Deadline guide</h2><p>Upcoming work</p></div><span class="mini-icon">â—·</span></div>
+            <div id="deadlineList" class="deadline-list"></div>
+          </div>
+          <div class="tip-card"><div class="tip-spark">âœ¦</div><p class="tip-kicker">A LITTLE REMINDER</p><h3>Small steps make great progress.</h3><p>Check your tasks regularly and submit your work before the deadline.</p></div>
+        </aside>
+      </section>
+      <footer>Â© <span id="year"></span> Vessel of Honour School <span>â€¢</span> Learning Hub <span class="live-dot">â— Online</span></footer>
+    </main>
+  </div>
+
+  <dialog id="postDialog" class="post-dialog">
+    <form id="postForm">
+      <div class="dialog-head"><div><p class="eyebrow">TEACHER WORKSPACE</p><h2>Create a learning post</h2></div><button type="button" class="close-btn" id="closeDialog" aria-label="Close">Ã—</button></div>
+      <label>Post type<select id="postType" required><option value="assignment">Assignment / Homework</option><option value="project">Project work</option><option value="announcement">Announcement</option></select></label>
+      <div class="form-row">
+        <label>Subject<select id="postSubject" required><option>English</option><option>Mathematics</option><option>Science</option><option>ICT</option><option>Social Studies</option><option>Other</option></select></label>
+        <label>Class / group<input id="postClass" maxlength="50" placeholder="e.g. JHS 2 or All students" required></label>
+      </div>
+      <label>Title<input id="postTitle" maxlength="100" placeholder="e.g. Fractions practice" required></label>
+      <label>Instructions<textarea id="postDescription" rows="4" maxlength="1200" placeholder="Explain what learners should do..." required></textarea></label>
+      <label>Due date <span class="optional">(optional for announcements)</span><input id="postDue" type="date"></label>
+      <p class="form-note">Posts are shared online with signed-in users of this school app.</p>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelDialog">Cancel</button><button type="submit" class="primary-btn" id="publishButton">Publish post</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Supabase's browser library. The anon/publishable key is designed for browser use;
+       database security must be enforced by the Row Level Security policies in supabase.sql. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
