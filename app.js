@@ -1,4 +1,4 @@
-﻿/* Vessel of Honour Learning Hub â€” cloud-connected version.
+/* Vessel of Honour Learning Hub â€” cloud-connected version.
    Access is enforced by Supabase Auth + database Row Level Security (see supabase.sql). */
 const CONFIG_READY = window.VOH_SUPABASE_URL && window.VOH_SUPABASE_ANON_KEY &&
   !window.VOH_SUPABASE_URL.includes("PASTE_YOUR") && !window.VOH_SUPABASE_ANON_KEY.includes("PASTE_YOUR");
@@ -98,7 +98,7 @@ $("forgotPasswordButton").addEventListener("click", async () => {
 
   try {
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin
+      redirectTo: window.location.origin + window.location.pathname
     });
 
     if (error) throw error;
@@ -133,6 +133,17 @@ $("resetPasswordForm").addEventListener("submit", async event => {
   button.disabled = true;
 
   try {
+    const { data: { session }, error: sessionError } =
+      await supabaseClient.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (!session?.user) {
+      throw new Error(
+        "Your password-reset session is missing or expired. Request a new password-reset email and open its newest link."
+      );
+    }
+
     const { error } = await supabaseClient.auth.updateUser({ password });
 
     if (error) throw error;
@@ -274,7 +285,3 @@ function render(){
 $("year").textContent=new Date().getFullYear();
 setAuthMode("login");
 initialiseSession();
-
-
-
-
